@@ -28,7 +28,7 @@ def show():
 @login_required
 def send():
     if request.method == 'POST':        
-        from_id = g.user['id']
+        from_id = g.user[0]
         to_username = request.form["to_username"]
         subject = request.form["subject"]
         body = request.form["body"]
@@ -51,7 +51,7 @@ def send():
         userto = None 
         
         userto = db.execute(
-            "SELECT username FROM user WHERE username = ?", (to_username,)
+            "SELECT * FROM user WHERE username = ?", (to_username,)
         ).fetchone()
         
         if userto is None:
@@ -62,7 +62,7 @@ def send():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO message (from_id, to_id, subject,body) VALUES (?,?,?,?)", (g.user['id'], userto['id'], subject, body)
+                "INSERT INTO message (from_id, to_id, subject,body) VALUES (?,?,?,?)", (from_id, userto[0], subject, body)
             )
             db.commit()
 

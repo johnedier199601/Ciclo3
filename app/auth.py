@@ -283,7 +283,7 @@ def login():
             if error is None:
                 session.clear()
                 session['user_id'] = user["username"]
-                return render_template('inbox/show.html')#redirect(url_for('inbox.show))
+                return redirect(url_for('inbox.show'))
                 
 
             flash(error)
@@ -308,9 +308,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    g.user = None
-    return render_template('auth/login.html')
-    #redirect(url_for('auth.login'))
+    return redirect(url_for('auth.login'))
 
 
 def login_required(view):
