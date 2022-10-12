@@ -3,7 +3,7 @@ from flask import (
 )
 
 from app.auth import login_required
-from app.db import close_db, get_db
+from app.db import get_db
 
 bp = Blueprint('inbox', __name__, url_prefix='/inbox')
 
