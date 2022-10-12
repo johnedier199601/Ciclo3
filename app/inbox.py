@@ -3,7 +3,7 @@ from flask import (
 )
 
 from app.auth import login_required
-from app.db import get_db
+from app.db import close_db, get_db
 
 bp = Blueprint('inbox', __name__, url_prefix='/inbox')
 
@@ -29,7 +29,7 @@ def show():
 def send():
     if request.method == 'POST':        
         from_id = g.user[0]
-        to_username = request.form["to_username"]
+        to_username = request.form["to"]
         subject = request.form["subject"]
         body = request.form["body"]
 
@@ -62,7 +62,7 @@ def send():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO message (from_id, to_id, subject,body) VALUES (?,?,?,?)", (from_id, userto[0], subject, body)
+                "INSERT INTO message (from_id, to_id, subject,body)" "VALUES (?,?,?,?)", (from_id, userto[0], subject, body)
             )
             db.commit()
 
